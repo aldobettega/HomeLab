@@ -1,3 +1,10 @@
 site_name: HomeLab
 theme:
   name: windmill-dark
+
+nav:
+  - Home: index.md
+  - Roadmap: roadmap/index.md
+  - Troubleshooting: troubleshooting/index.md
+  - Notes:
+    - Index: notes/index.md
