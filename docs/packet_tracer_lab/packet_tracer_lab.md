@@ -167,4 +167,4 @@ and the network are working
 
 ![workingNetwork](img/workingNetwork.png){ width="500" }
 
-you can find the working solution on 
+you can find the working solution on [router_on_a_stick.pkt](https://github.com/aldobettega/HomeLab/blob/main/pkt/router_on_a_stick.pkt)
