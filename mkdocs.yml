@@ -2,9 +2,13 @@ site_name: HomeLab
 theme:
   name: windmill-dark
 
+markdown_extensions:
+  - attr_list
+
 nav:
   - Home: index.md
   - Roadmap: roadmap/index.md
   - Troubleshooting: troubleshooting/index.md
+  - Packet Tracer Lab: packet_tracer_lab/packet_tracer_lab.md
   - Notes:
     - Index: notes/index.md
