@@ -15,3 +15,4 @@ jobs:
           token: ${{ secrets.PORTFOLIO_TOKEN }}
           repository: aldobettega/aldobettega.github.io
           event-type: update-homelab
+        
