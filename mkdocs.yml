@@ -7,7 +7,10 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Roadmap: roadmap/index.md
+  - Hardware: hardware/index.md
+  - Roadmap:
+      - roadmap/index.md
+      - roadmap/roadmap.md
   - Troubleshooting: troubleshooting/index.md
   - Packet Tracer Lab: packet_tracer_lab/packet_tracer_lab.md
   - Notes:
