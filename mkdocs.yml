@@ -8,10 +8,5 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Hardware: hardware/index.md
-  - Roadmap:
-      - roadmap/index.md
-      - roadmap/roadmap.md
-  - Troubleshooting: troubleshooting/index.md
   - Packet Tracer Lab: packet_tracer_lab/packet_tracer_lab.md
-  - Notes:
-    - Index: notes/index.md
+  - Inital Setup: setup/index.md
