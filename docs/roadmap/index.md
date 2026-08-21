@@ -1,4 +1,4 @@
-### 💼 2. I Progetti "Curriculum-Killer" (Networking & Cybersecurity)
+### 💼 I Progetti "Curriculum-Killer" (Networking & Cybersecurity)
 
 * **Segmentazione di Rete Avanzata (VLANs & Firewalling):**
     * Usando pfSense o OPNsense, crea regole (ACL) che isolano i dispositivi insicuri (telecamere, smart TV) in una VLAN separata (IoT). Dimostra che il traffico non può passare verso la tua rete principale, ma che tu puoi raggiungere loro.
@@ -11,14 +11,12 @@
 
 ---
 
-### 🎮 3. I Progetti "Life-Improver" (Belli, Utili e Divertenti)
+### 🎮 I Progetti "Life-Improver" (Belli, Utili e Divertenti)
 
 Questi sono i servizi che, una volta installati, cambieranno in meglio la tua vita digitale quotidiana e ti daranno tantissima soddisfazione.
 
 * **Pi-hole o AdGuard Home:** 
     * instradare tutto il traffico DNS della tua rete qui dentro farà sparire magicamente la pubblicità dai siti web e dalle app
-* **WireGuard (VPN Personale):**
-    * Accendi la VPN sul telefono e, magicamente, la tua connessione viene criptata fino a casa tua, navigando in sicurezza
 * **Nextcloud:**
     * Il tuo Google Drive / iCloud personale. Sincronizza automaticamente le foto dal tuo smartphone, ospita i tuoi documenti e non ha abbonamenti mensili. Hai il controllo totale dei tuoi dati (Privacy).
 * **Jellyfin o Plex:**

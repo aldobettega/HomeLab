@@ -10,3 +10,9 @@ nav:
   - Hardware: hardware/index.md
   - Packet Tracer Lab: packet_tracer_lab/packet_tracer_lab.md
   - Inital Setup: setup/index.md
+  - Network:
+    - OPNsense: network/OPNsense.md
+    - Switch: network/switch.md
+    - Topology: network/topologia.md
+    - VLAN notes: network/vlan_notions.md
+  - VPN: vpn/configurazione_wireguard.md

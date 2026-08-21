@@ -16,28 +16,19 @@
 
 * **Specifiche:** Modello legacy con 200 GB di archiviazione totale e vecchi protocolli di rete (SMBv1).
 
----
+# Azioni
 
-### 2. Future Impostazioni (Roadmap 3-2-1)
+## Creazione cartella condivisa
 
-Per mettere in completa sicurezza i tuoi dati ed evitare sprechi di memoria, lavoreremo su queste tre fasi:
+Creare una cartella condivisa sul synology:
 
-**Fase A: Migrazione e rimozione duplicati**
+- mettere permessi di lettura scrittura a user con cui si fa accesso e senza crittografia
 
-1. Creare una cartella di transito sul Synology.
-2. Usare un computer come "ponte" per copiare i 200 GB dal vecchio D-Link al Synology.
-3. Utilizzare software come **dupeGuru** (su PC) o l'app **Analizzatore Archiviazione** (sul NAS) per identificare ed eliminare in blocco i file già presenti sul Synology, tenendo solo le novità.
+Predisporre container LXC di proxmox
 
-**Fase B: Backup Storico Locale**
-
-1. Dedicare il disco USB WD Elements *esclusivamente* ai backup.
-2. Installare e configurare l'applicazione **Hyper Backup** per eseguire salvataggi automatici incrementali.
-3. Attivare lo storico delle versioni (versioning) per poter recuperare dati in caso di cancellazione umana, corruzione o attacchi ransomware.
-
-**Fase C: Backup Remoto (Antidisastro)**
-
-1. Formattare il D-Link una volta svuotato.
-2. Posizionarlo fisicamente in un altro edificio (casa di parenti/ufficio).
-3. Configurarlo per ricevere dal Synology una copia di sicurezza automatica dei soli dati vitali, garantendoti protezione da disastri fisici domestici (furti, incendi, fulmini).
-
-*(Nota opzionale di sicurezza: ricordati che, qualora il NAS Synology fosse in un luogo accessibile a estranei, potrai disabilitare il tasto RESET fisico dal Pannello di Controllo).*
+- dalla gui di proxmox dalle impostazioni del container andare in options>features e attivare SMB/CIFS
+- riavviare container
+- accedere in ssh al container
+- creare cartella con  mkdir -p /mnt/synology
+- montare con
+    mount -t cifs //ip_nas/cartella_condivisa_nas /mnt/synology -o username=,vers=2.0,cache=none,echo_interval=60

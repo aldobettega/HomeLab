@@ -15,11 +15,24 @@ OPNsense, il router del server, gestisce due interfacce:
 
 # Rete homelab
 
-L'indirizzamento di questa sottorete è:
-    10.0.10.0/24
+Ci sono tre vlan:
 
+- VLAN 10: 10.0.10.0/24 -> management homelab (infrastruttura di base) 
+- VLAN 20: 10.0.20.0/24 -> server e vm
+- VLAN 30: 10.0.30.0/24 -> client wifi
 
-## OPNsense
+## VLAN 10
+
+La rete 10.0.10.0/24 è strutturata come segue:
+
+- 10.0.10.1: Gateway OPNsense
+- 10.0.10.2 - 10.0.10.9: apparati di rete fisici
+    - switch TP-link
+    - access point MikroTik
+- 10.0.10.10 - 10.0.10.49: server fisici e NAS
+- 10.0.10.50 - 10.0.10.250: pool dinamico per eventuali client temporanei
+
+### OPNsense
 
 con gateway router
     10.0.10.1
@@ -28,9 +41,24 @@ rappresentato da OPNsense sull'interfaccia LAN (vtnet0_vlan10). Compiti:
 - distribuisce ip tramite kea dhcp
 - risolve i nomi di dominio tramite unbound DNS
 
+è possibile sia interagire con la gui che andara da proxmox sul terminale. Comandi utili
+
+- ifconfig: mostra la rete di opnsense
+- netstat -rn: mostra dove opnsense manda il traffico
+
 ## Mikrotik
 
 Gli sono state tolte le funzionalità di router (no dhcp, no assengazione ip) e messo in bridge L2,
 agisce solo da ripetitore wifi.
+
+È stato inglobato nella rete dell'homelab con l'indirizzo 10.0.10.3
+
 Ora se un dispositivo si connette a questa rete wifi (mikrotik-camere), al dispositivo viene assegnato un ip
-    10.0.10.x
+    10.0.10.50 - 10.0.10.250
+preso dal pool dinamico assegnato da OPNsense.
+
+## NAS
+
+
+
+

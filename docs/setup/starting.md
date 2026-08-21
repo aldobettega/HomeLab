@@ -1,4 +1,5 @@
 # Finding hardware
+
 To start a homelab on a budget, you have to search for the right hardware on the right sites for the right prices. I didn't have much experience in the hardware market, and in 2026 the prices are high, so you have to be thoughtful about what you purchase.
 
 Here are a few tips I can share after my hardware research:

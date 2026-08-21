@@ -9,10 +9,7 @@ qui si configura il pvid
 fare config backup in caso lo switch si spwgnesse.
 
 
-# le configurazioni avanzate fatte dalla gui di proxmox vengono solo salvate in un file (trunk)
-
-
-# GUIDA DEFINITIVA: ARCHITETTURA "ROUTER ON A STICK" CON GESTIONE WI-FI ISOLATA
+# Architettura router on a stick
 
 ## 1. Topologia e Concetti di Base
 
@@ -118,5 +115,3 @@ Finalmente giunti a Livello 3, l'ultimo ostacolo riguardava la mancata distribuz
 **Perché lo facciamo:** Kea DHCP (introdotto nelle versioni recenti in sostituzione al vecchio ISC DHCPv4) è molto rigoroso. Se ci si affida solo alla spunta "Auto collect option data", si presuppone che i servizi DNS interni siano perfettamente configurati e attivi. L'inserimento manuale delle *Options* garantisce che, nel payload del pacchetto DORA (Discover, Offer, Request, Acknowledge) che il server invia al telefono, ci siano le coordinate esatte per la navigazione. Senza queste, il telefono riceve un indirizzo IP, ma è di fatto cieco (non sa tradurre google.com in un IP) e bloccato in una stanza senza porte (non sa a quale IP inviare il traffico esterno).
 
 ---
-
-Con questo documento hai una panoramica assoluta. Ora la tua rete non solo funziona, ma sai esaminarne ogni singolo strato logico, dal segnale elettrico iniettato sul cavo PoE fino all'inoltro del pacchetto DORA via Wi-Fi. Buon divertimento con il tuo nuovo HomeLab.
