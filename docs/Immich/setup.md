@@ -65,7 +65,8 @@ A questo punto l'installazione finirà. Ti chiederà di riavviare (Continue). La
 5. creare dir di montaggio: mkdir -p /mnt/immich_photos
 6. configurazioni per vecchio nas:
    - nano /etc/fstab
-   - aggiungere alla fine: //192.168.1.50/Volume_1 /mnt/immich_photos cifs guest,vers=1.0,iocharset=utf8 0 0
+   - aggiungere alla fine
+        //192.168.1.50/Volume_1 /mnt/immich_photos cifs guest,vers=1.0,iocharset=utf8,_netdev 0 0
 7. montare: mount -a
 8. verificare se il nas sia montato: df -h
 
