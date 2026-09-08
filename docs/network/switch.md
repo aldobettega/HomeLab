@@ -115,3 +115,14 @@ Finalmente giunti a Livello 3, l'ultimo ostacolo riguardava la mancata distribuz
 **Perché lo facciamo:** Kea DHCP (introdotto nelle versioni recenti in sostituzione al vecchio ISC DHCPv4) è molto rigoroso. Se ci si affida solo alla spunta "Auto collect option data", si presuppone che i servizi DNS interni siano perfettamente configurati e attivi. L'inserimento manuale delle *Options* garantisce che, nel payload del pacchetto DORA (Discover, Offer, Request, Acknowledge) che il server invia al telefono, ci siano le coordinate esatte per la navigazione. Senza queste, il telefono riceve un indirizzo IP, ma è di fatto cieco (non sa tradurre google.com in un IP) e bloccato in una stanza senza porte (non sa a quale IP inviare il traffico esterno).
 
 ---
+
+# Mappatura Porte switch
+
+1: proxmox
+2: nas d-link vecchio
+3: Access Point MikroTik
+4: Nas nuovo
+5: -
+6: -
+7: -
+8: Accesso alla rete

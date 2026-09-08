@@ -16,3 +16,4 @@ nav:
     - Topology: network/topologia.md
     - VLAN notes: network/vlan_notions.md
   - VPN: vpn/configurazione_wireguard.md
+  - Switch: Switch/setup1.md

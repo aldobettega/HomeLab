@@ -57,8 +57,5 @@ Ora se un dispositivo si connette a questa rete wifi (mikrotik-camere), al dispo
     10.0.10.50 - 10.0.10.250
 preso dal pool dinamico assegnato da OPNsense.
 
-## NAS
-
-
 
 
