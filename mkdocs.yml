@@ -26,6 +26,7 @@ nav:
     - Pi-hole: pi-hole/setup.md
   - Proxmox Troubleshooting:
     - Reset password: Proxmox_troubleshooting/reset_password.md
+    - Cambiare ID: Proxmox_troubleshooting/spostamento_VM_e_LXC.md
   - Notes:
     - VLAN Notes: network/vlan_notions.md
   - Packet Tracer Lab: packet_tracer_lab/packet_tracer_lab.md
