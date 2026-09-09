@@ -8,12 +8,24 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Hardware: hardware/index.md
-  - Packet Tracer Lab: packet_tracer_lab/packet_tracer_lab.md
-  - Inital Setup: setup/index.md
+  - Inital Setup: setup/starting.md
   - Network:
-    - OPNsense: network/OPNsense.md
-    - Switch: network/switch.md
-    - Topology: network/topologia.md
-    - VLAN notes: network/vlan_notions.md
-  - VPN: vpn/configurazione_wireguard.md
-  - Switch: Switch/setup1.md
+    - Switch:
+      - Initial Setup: Switch/setup_iniziale.md
+      - VLANS Config: Switch/ports_vlans.md
+    - OPNsense:
+      - Initial Setup: OPNsense/setup.md
+      - Notes: OPNsense/notions.md
+      - Infrastructure: OPNsense/Infrastructure.md
+    - VPN: vpn/tailscale.md
+    - Nginx Proxy Manager: nginx-proxy/setup.md
+  - Services:
+    - Immich: Immich/setup.md
+    - Jellyfin: jellyfin/setup.md
+    - Czkawka: czkawka/setup.md
+    - Pi-hole: pi-hole/setup.md
+  - Proxmox Troubleshooting:
+    - Reset password: Proxmox_troubleshooting/reset_password.md
+  - Notes:
+    - VLAN Notes: network/vlan_notions.md
+  - Packet Tracer Lab: packet_tracer_lab/packet_tracer_lab.md

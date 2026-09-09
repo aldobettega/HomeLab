@@ -75,3 +75,19 @@ Dobbiamo configurare che cosa deve succedere quando una porta riceve un pacchett
 |Port 7|1|
 |Port 8|1|
 
+
+# Aggiornamento infrastruttura
+
+Ora che abbiamo configurato correttamente le VLAN occorre aggiornare Proxmox affinchè tutto funzioni.
+
+1. Preparazione infrastruttura: è necessario assicurarsi che Hypervisor e Firewall comunichino correttamente
+    - Disabilitare Hardware Offloading su OPNsense -> evita che i driver virtuali VirtIO rimuovano le etichette 802.1Q dai pacchetti in transito
+    - Configurazione Trunk Proxmox: modificare il file `/etc/pve/qemu-server/101.conf` aggiungendo i tag consentiti alla scheda di rete: `net0: ...,bridge=vmbr0,trunks=10;20;30;40`. In questo modo il bridge VLAN-aware di Proxmox è istruito a far passare i pacchetti taggati verso OPNsense.
+    - Eseguire shutdown + restart della VM di OPNsense
+2. Migrazione servizi:
+    - Modificare l'interfaccia di rete del servizio posizionandolo sulla VLAN desiderata e aggiornare il Gateway sulla stessa VLAN.
+    - Eseguire shutdown + restart del servizio
+3. Verifica:
+    - ping a 10.0.20.1 -> verifica L2 verso gateway di OPNsense
+    - ping a 8.8.8.8 -> verifica che esca su internet (funziona firewall, routing NAT, L3)
+
