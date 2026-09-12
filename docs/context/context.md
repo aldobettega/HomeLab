@@ -51,11 +51,14 @@ L'IP di Proxmox è volutamente mantenuto sulla rete dell'ISP per garantire l'acc
   * `10.0.10.1`: Gateway OPNsense
   * `10.0.10.2`: Switch TP-Link
   * `10.0.10.3`: MikroTik AP
+  * `10.0.10.4`: Pi-hole
 * **VLAN 20 (Servers & NAS) - `10.0.20.0/24`**
   * Core applicativo e storage. Nessun accesso diretto dall'esterno.
   * `10.0.20.1`: Gateway OPNsense
-  * `10.0.20.5`: Nginx Proxy Manager (IP Statico)
-  * `10.0.20.10 - 10.0.20.49`: NAS fisici e container LXC (Immich, Jellyfin)
+  * `10.0.20.3`: Nginx Proxy Manager (IP Statico)
+  * `10.0.20.10`: Immich
+  * `10.0.20.11`: Jellyfin
+  * `10'.0.20.50`: Nas D-link
 * **VLAN 30 (Trusted / Lab Admins) - `10.0.30.0/24`**
   * Rete privilegiata per amministratori. Può accedere a tutte le altre VLAN tramite regole firewall.
   * `10.0.30.1`: Gateway OPNsense
@@ -75,10 +78,10 @@ L'IP di Proxmox è volutamente mantenuto sulla rete dell'ISP per garantire l'acc
 
 I servizi sono isolati tramite container LXC e VM su Proxmox:
 
-* **101 (opnsense-router):** VM isolata, core network e firewall.
-* **103 (pi-hole):** Container LXC per filtraggio DNS.
-* **105 (nginx-proxy):** Container LXC (VLAN 20, IP `10.0.20.5`) con Docker nidificato. Espone i servizi internamente ed esternamente.
-* **Nodi Applicativi:** `immich-server`, `jellyfin-server` e `czkawka-service`.
+* **100 (opnsense-router):** VM isolata, core network e firewall.
+* **101 (pi-hole):** Container LXC per filtraggio DNS.
+* **102 (nginx-proxy):** Container LXC (VLAN 20, IP `10.0.20.5`) con Docker nidificato. Espone i servizi internamente ed esternamente.
+* **Nodi Applicativi:** 110 `immich-server`, 111 `jellyfin-server` e 112 `czkawka-service`.
 
 ---
 
@@ -87,6 +90,28 @@ I servizi sono isolati tramite container LXC e VM su Proxmox:
 La rete usa un dominio locale (`lab.lan`) per accedere ai servizi senza usare gli IP. La catena di risoluzione:
 1. **DHCP:** OPNsense assegna Pi-hole come server DNS univoco.
 2. **Filtraggio:** Pi-hole (Quad9 per le query pubbliche).
-3. **Inoltro Condizionato:** Pi-hole invia le richieste per `lab.lan` a OPNsense.
-4. **Risoluzione Locale:** OPNsense (Unbound DNS) mappa tutti i sottodomini (es. `immich.lab.lan`) verso l'IP di Nginx Proxy Manager (`10.0.20.5`).
+3. **Inoltro Condizionato:** Pi-hole invia le richieste per `lab.lan` a OPNsense. copre sia la sottorete 10.0.10.0/24 che la 10.0.20.0/24
+4. **Risoluzione Locale:** OPNsense (Unbound DNS) mappa tutti i sottodomini (es. `immich.lab.lan`) verso l'IP di Nginx Proxy Manager (`10.0.20.3`).
 5. **Proxying:** Nginx smista il traffico alle porte e agli IP corretti dei container sulla VLAN 20.
+
+5. Accesso Remoto (Zero Trust VPN via Tailscale)
+
+## 5. Accesso Remoto (Zero Trust VPN via Tailscale)
+
+L'accesso dall'esterno all'HomeLab e ai servizi interni è gestito interamente tramite Tailscale, garantendo un'architettura Zero Trust senza esporre porte su Internet.
+
+* **Subnet Router:** L'agent di Tailscale è configurato come plugin direttamente sul firewall OPNsense, che funge da nodo centrale (Subnet Router) per instradare il traffico verso le VLAN interne.
+* **Rotte Annunciate:** OPNsense annuncia attivamente le reti `10.0.10.0/24` (Management) e `10.0.20.0/24` (Servers/Apps). I client (es. PC, smartphone) devono connettersi utilizzando il flag `--accept-routes` per poter instradare correttamente il traffico verso il Lab.
+* **Gestione DNS Globale:** Nella console di amministrazione web di Tailscale, l'IP di Pi-hole (`10.0.10.4`) è impostato come *Global Nameserver* con l'opzione *Override local DNS* attiva. I client devono connettersi con il flag `--accept-dns` per poter risolvere correttamente i domini locali (es. `immich.lab.lan` proxyato da Nginx) e beneficiare del filtraggio pubblicitario anche da remoto.
+
+---
+
+## 6. Note Operative Hardware
+
+* **Migrazione e Configurazione NAS Legacy (D-Link):** A causa di limitazioni hardware e timeout del client DHCP interno al dispositivo quando interfacciato con porte switch in modalità VLAN Access, il NAS fallisce l'acquisizione dinamica dell'IP. Affinché comunichi sulla VLAN 20, deve essere configurato in modalità **IP Statico** direttamente dalla sua interfaccia web:
+  * **IP Address:** `10.0.20.50`
+  * **Subnet Mask:** `255.255.255.0`
+  * **Gateway:** `10.0.20.1` (OPNsense)
+  * **DNS:** `10.0.10.4` (Pi-hole)
+  
+  *Nota:* Questa configurazione manuale è l'unico modo per garantirne il riconoscimento sullo switch TP-Link (Porta 2, Untagged, PVID 20) e permettere l'aggancio del mount CIFS da parte della macchina virtuale di Immich.

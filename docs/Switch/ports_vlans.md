@@ -91,3 +91,15 @@ Ora che abbiamo configurato correttamente le VLAN occorre aggiornare Proxmox aff
     - ping a 10.0.20.1 -> verifica L2 verso gateway di OPNsense
     - ping a 8.8.8.8 -> verifica che esca su internet (funziona firewall, routing NAT, L3)
 
+## Inserimento dei servizi nella VLAN 20
+
+0. Spegnere la VM
+1. Modificare il VLAN tag della VM da Hardware > Network > in VLAN tag selezionare 20
+2. Accendere la VM e accedere la file di configurazione di rete con `/etc/newtoek/interfaces` e modificare la primary network interface da dhcp in:
+   
+```bash
+    iface ens18 inet static
+        address 10.0.20.x/24
+        gateway 10.0.20.1
+        dns-nameservices 8.8.8.8 1.1.1.1
+```

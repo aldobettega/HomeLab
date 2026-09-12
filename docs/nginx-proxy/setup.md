@@ -7,7 +7,34 @@ Per nginx è sufficiente un container, diamogli
 - 1 core
 - 1 GB RAM
 - 8 GB storage
-- ip statico nella sottorete dell'homelab (10.0.10.5)
+- ip statico
+
+## Installazione nginx proxy manager
+
+Installare docker
+
+```bash
+apt update && apt install docker.io docker-compose -y
+```
+
+Creare un dockerfile con `mkdir -p /opt/npm && cd /opt/npm nano docker-compose.yml`
+
+```bash
+version: '3.8'
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+```
+
+lanciarlo con `docker-compose up -d`
 
 ## Modifiche alla rete per DNS
 

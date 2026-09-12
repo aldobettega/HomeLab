@@ -17,6 +17,13 @@ aggiungere le reti:
 
 Dal sito di tailscale (Admin Console), cliccare sui tre pallini di fianco al dispositivo OPNsense, scegliere "Edit route settings" e approvare le reti che ora compariranno nella sezione Subnets.
 
+## Configurare DNS
+
+Selezionare su Network > DNS
+- Nameserver: l'ip di pi-hole che gestisce il DNS
+- abilitare split DNS
+- Selezionare come dominio quello del lab lab.lan
+
 ## smartphone
 
 installare l'app di tailscale

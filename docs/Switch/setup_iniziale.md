@@ -1,6 +1,3 @@
-
-
-
 # Architettura router on a stick
 
 ## Topologia e Concetti di Base
