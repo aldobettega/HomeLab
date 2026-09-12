@@ -27,7 +27,7 @@ Creare cartella per mount:
     mkdir -p /mnt/jellyfin_media
 
 Aggiungere configurazione di connessione al vecchio NAS:
-    //192.168.1.50/Volume_1 /mnt/jellyfin_media cifs guest,vers=1.0,iocharset=utf8,_netdev 0 0
+    //10.0.20.50/Volume_1 /mnt/jellyfin_media cifs guest,vers=1.0,iocharset=utf8,_netdev 0 0
 
 Montare il NAS:
     mount -a

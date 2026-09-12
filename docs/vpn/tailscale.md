@@ -1,44 +1,50 @@
-# Tailscale
+# Accesso Remoto: Zero Trust VPN con Tailscale su OPNsense
 
-noip richiede un ip **pubblico**, i provider di rete potrebbero fornire un indirizzo tipo 100.X.X.X (es. 100.64.x.x) che corrisponde ad un CGNAT e con questo non è possibile lavorarci, occorre utilizzare tailscale oppure richiedere al provider un ip **pubblico** (anche dinamico va bene, purché pubblico).
+I vecchi servizi di Dynamic DNS (come No-IP) richiedono un IP **pubblico**. Oggi molti provider (soprattutto su linee FWA o fibra) forniscono indirizzi del tipo `100.X.X.X` (es. `100.64.x.x`). Questo indica che siete dietro a un CGNAT (Carrier-Grade NAT). In questo scenario, il port forwarding tradizionale sul router non funziona. 
 
-Occorre installare il plugin os-tailscale su opnsense.
-Poi attivarlo in VPN>Tailscale>Settings checkando enabled (salvare).
-Poi andare in status e cliccare il Login URL per autorizzare la macchina.
+La soluzione moderna e più sicura (Zero Trust) è utilizzare **Tailscale**, che buca il NAT automaticamente senza aprire alcuna porta sul router.
 
-## aggiunta reti
+## 1. Installazione su OPNsense
 
-Abbiamo aggiunto OPNsense su tailscale, ma bisogna che agisca da ponte per raggiungere il resto del lab (Split Tunneling).
+1. Installare il plugin `os-tailscale` dalla sezione Firmware di OPNsense.
+2. Navigare in **VPN > Tailscale > Settings**, spuntare **Enable** e salvare.
+3. Andare nella tab **Status** e cliccare sul **Login URL** generato per autorizzare il firewall tramite il vostro account Tailscale.
 
-VPN -> Tailscale -> Settings -> tab **Advertised Routes**
-aggiungere le reti:
+## 2. Aggiunta Reti (Subnet Router)
 
-192.168.1.0/24,10.0.10.0/24
+Abbiamo aggiunto OPNsense alla rete Tailscale, ma ora dobbiamo dirgli di agire da "ponte" (Subnet Router) per permetterci di raggiungere le VLAN interne dell'HomeLab dall'esterno (Split Tunneling).
 
-Dal sito di tailscale (Admin Console), cliccare sui tre pallini di fianco al dispositivo OPNsense, scegliere "Edit route settings" e approvare le reti che ora compariranno nella sezione Subnets.
+1. Su OPNsense, andare in **VPN > Tailscale > Settings > Advanced**.
+2. Nel campo **Advertised Routes**, aggiungere le reti del nostro Lab separandole da virgola:
+   `192.168.1.0/24,10.0.10.0/24,10.0.20.0/24`
+   *(Nota: La 10.0.20.0/24 è fondamentale perché è la VLAN che ospita i nostri server e Nginx Proxy Manager).*
+3. Dal sito web di Tailscale (Admin Console), andare nella lista *Machines*, cliccare sui tre puntini di fianco al dispositivo OPNsense, scegliere **Edit route settings** e approvare (spuntare) le reti appena annunciate.
 
-## Configurare DNS
+## 3. Configurazione DNS (Magic DNS e Pi-hole)
 
-Selezionare su Network > DNS
-- Nameserver: l'ip di pi-hole che gestisce il DNS
-- abilitare split DNS
-- Selezionare come dominio quello del lab lab.lan
+Per poter digitare dal telefono `immich.lab.lan` ed essere reindirizzati al nostro server anche quando siamo fuori casa in 4G, dobbiamo dire a Tailscale di usare il nostro Pi-hole interno.
 
-## smartphone
+Dalla Admin Console web di Tailscale, andare in **DNS**:
+1. Alla voce **Nameservers**, cliccare *Add nameserver > Custom...* e inserire l'IP interno di Pi-hole sulla rete di Management: `10.0.10.4`.
+2. Spuntare l'opzione **Override local DNS** per forzare i client a usare Pi-hole, bloccando la pubblicità anche in mobilità e permettendo la risoluzione del dominio `lab.lan`.
 
-installare l'app di tailscale
-login con lo stesso account
+## 4. Utilizzo sui Client
 
-accendere semplicemente la VPN (su Android accetta le rotte in automatico e farà passare nel tunnel solo il traffico per il Lab). Selezionare "Use exit node" (OPNsense) *solo* se si vuole far passare l'intero traffico Internet del telefono da casa per ragioni di sicurezza su Wi-Fi pubblici.
+### Smartphone
+1. Installare l'app di Tailscale (iOS/Android).
+2. Effettuare il login con lo stesso account.
+3. Avviare la VPN. L'app accetterà automaticamente le rotte di OPNsense, facendo passare nel tunnel *solo* il traffico destinato al Lab (garantendo massima velocità per la normale navigazione web). 
+*Nota: Selezionare "Use exit node" (OPNsense) solo se si è connessi a un Wi-Fi pubblico insicuro e si desidera far transitare l'intero traffico Internet (tunnel completo) in modo criptato verso casa.*
 
-## installare ed usare sul pc
+### PC (Linux / macOS)
+Per agganciare le rotte del Lab e le regole DNS di Pi-hole dal terminale:
 
-accendere e sbloccare le rotte pubblicate da OPNsense:
-`sudo tailscale up --accept-routes`
+* **Accendere e sbloccare rotte e DNS:**
+  `sudo tailscale up --accept-routes --accept-dns`
 
-spegnere temporaneamente:
-`sudo tailscale down`
+* **Spegnere temporaneamente:**
+  `sudo tailscale down`
 
-spegnere definitivamente (non si avvierà da solo all'accensione del PC):
-`sudo systemctl stop tailscaled`
-`sudo systemctl disable tailscaled`
+* **Disabilitare definitivamente (evita l'avvio al boot):**
+  `sudo systemctl stop tailscaled`
+  `sudo systemctl disable tailscaled`

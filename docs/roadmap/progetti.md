@@ -38,4 +38,19 @@ Ecco l'elenco dei progetti estratti, deduplicati e classificati per una rapida c
 
 * **Audiobookshelf** - *[Audio]* Server per audiolibri e podcast che ricorda la posizione di ascolto e supporta Android Auto/CarPlay.
 * **Kavita / Komga** - *[E-Reading]* Libreria server-side per organizzare e leggere ebook, fumetti e manga da qualsiasi dispositivo.
-* **Wallabag** - *[Read-it-later]* Salva articoli dal web, eliminando pop-up e pubblicità, per archiviarli e leggerli in un secondo momento.
+* **Wallabag** - *[Read-it-later]* Salva articoli dal web, eliminando pop-up e pubblicità, per archiviarli e leggerli in un secondo momento.   
+
+
+
+
+
+
+
+
+
+
+# todo
+
+- dashboard proxmox: gestore dei servizi
+- sapere quando qualcosa va in down
+- vedere di comprare psu

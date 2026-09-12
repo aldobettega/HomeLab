@@ -58,7 +58,7 @@ L'IP di Proxmox è volutamente mantenuto sulla rete dell'ISP per garantire l'acc
   * `10.0.20.3`: Nginx Proxy Manager (IP Statico)
   * `10.0.20.10`: Immich
   * `10.0.20.11`: Jellyfin
-  * `10'.0.20.50`: Nas D-link
+  * `10.0.20.50`: Nas D-link
 * **VLAN 30 (Trusted / Lab Admins) - `10.0.30.0/24`**
   * Rete privilegiata per amministratori. Può accedere a tutte le altre VLAN tramite regole firewall.
   * `10.0.30.1`: Gateway OPNsense
@@ -80,7 +80,7 @@ I servizi sono isolati tramite container LXC e VM su Proxmox:
 
 * **100 (opnsense-router):** VM isolata, core network e firewall.
 * **101 (pi-hole):** Container LXC per filtraggio DNS.
-* **102 (nginx-proxy):** Container LXC (VLAN 20, IP `10.0.20.5`) con Docker nidificato. Espone i servizi internamente ed esternamente.
+* **102 (nginx-proxy):** Container LXC (VLAN 20, IP `10.0.20.3`) con Docker nidificato. Espone i servizi internamente ed esternamente.
 * **Nodi Applicativi:** 110 `immich-server`, 111 `jellyfin-server` e 112 `czkawka-service`.
 
 ---

@@ -59,6 +59,15 @@ Andare su:
 - OPNsense > Services > Unbound DNS > Overrider
 - aggiungere host, dominio e ip del nostro nuovo indirizzo che il router di opnsense smisterà
 
+## Creazione record DNS
+
+Andare su pi-hole e inserire il record DNS che gli consentirà di collegare quel nome a nginx.
+
+Domain: x.lab.lan
+IP: ip di nginx
+
+Dobbiamo fare questo passaggio poichè è Pi-hole che gestisce il DNS.
+
 ## Aggiungere proxy
 
 Andare su nginx proxy manager e aggiungere un proxy host, scrivendo
