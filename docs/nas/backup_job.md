@@ -16,8 +16,4 @@ Dalla gui di proxmox selezionare vm, andare in backup>backup now e selezionare N
 
 2. Aggiungere regola di retention globale
    - andare in: Datacenter>storage>edit NAS_Backup>Backup retention
-   - è buona pratica selezionare:
-     - Keep last: 3
-     - Keep daily: 2
-     - Keep weekly: 1
-     in questo modo non riempiamo il disco di backup ma teniamo solo i più recenti.
+   - Keep last 2
