@@ -1,22 +1,19 @@
-Ecco l'elenco dei progetti estratti, deduplicati e classificati per una rapida consultazione:
+## Infrastruttura & Reti
 
-## 🛠️ Infrastruttura & Reti
+* **Uptime Kuma** - dahsboard di monitoraggio
+* **Infrastructure as Code (IaC) con Ansible:** - script ansible per setup automatico.
 
-* **Nginx Proxy Manager** - *[Reverse Proxy]* Trasforma IP e porte in indirizzi locali facili da ricordare (es. `jellyfin.casa`).
-* **Pi-hole / AdGuard Home** - *[DNS Sinkhole]* Blocca pubblicità, tracker e minacce informatiche a livello di rete per tutti i dispositivi connessi.
-* **Uptime Kuma** - *[Monitoraggio]* Fornisce una dashboard di stato e invia notifiche automatiche se un servizio o server si spegne.
-
-
-
-## 🔒 Sicurezza & Privacy
+## Sicurezza & Privacy
 
 * **Vaultwarden** - *[Password Manager]* Cassaforte digitale self-hosted per autocompilazione e condivisione familiare sicura delle credenziali.
 * **Kasm Workspaces** - *[Sandboxing]* Genera computer o browser virtuali isolati e "usa e getta" per navigare e aprire file sospetti in sicurezza.
 * **SearXNG** - *[Motore di Ricerca]* Aggrega in modo anonimo i risultati di motori come Google e Bing senza farti tracciare.
+* **Wazuh (SIEM) o Intrusion Detection System (IDS):**
+    * Installa Wazuh (un sistema di monitoraggio per la cybersecurity) o attiva Suricata sul tuo firewall. Fai un attacco simulato e fai uno screenshot dell'allarme generato.
 
 
 
-## 📁 Produttività & Archiviazione
+## Produttività & Archiviazione
 
 * **Nextcloud** - *[Cloud/Sync]* Alternativa a Google Workspace per sincronizzare file, contatti e calendari tra PC e smartphone.
 * **Syncthing** - *[Sync P2P]* Sincronizzazione decentralizzata, istantanea e diretta (senza server intermedi) di file pesanti tra dispositivi.
@@ -25,14 +22,12 @@ Ecco l'elenco dei progetti estratti, deduplicati e classificati per una rapida c
 
 
 
-## 🏡 Vita Quotidiana & Finanze
+## Vita Quotidiana & Finanze
 
 * **Home Assistant** - *[Domotica]* Hub locale e universale per integrare e automatizzare i dispositivi smart home di brand differenti.
 * **Actual Budget** - *[Finanza]* Software per tracciare transazioni bancarie e pianificare le spese familiari con il metodo a base zero.
 * **Mealie** - *[Cucina]* Estrae ricette dai siti web, pianifica i pasti settimanali e genera automaticamente la lista della spesa.
 * **ChangeDetection.io** - *[Web Tracking]* Invia notifiche quando rileva cambiamenti su specifiche pagine web (es. cali di prezzo o nuovi bandi).
-
-
 
 ## 📚 Intrattenimento & Lettura
 
@@ -42,15 +37,15 @@ Ecco l'elenco dei progetti estratti, deduplicati e classificati per una rapida c
 
 
 
-
-
-
-
-
-
+# idee
+- selfhost.zh
+- proxmox community scripts
+- homer
+- docker and portainer
+- grafana and prometheus
+- authentic
 
 # todo
 
 - dashboard proxmox: gestore dei servizi
 - sapere quando qualcosa va in down
-- vedere di comprare psu
