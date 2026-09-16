@@ -28,6 +28,7 @@ nav:
     - Reset password: troubleshooting/reset_password.md
     - Cambiare ID: troubleshooting/spostamento_VM_e_LXC.md
     - Trovare IP nascosto: troubleshooting/Trovare_ip.md
+    - Nmap mostra tutti gli indirizzi: troubleshooting/nmap.md
   - Notes:
     - VLAN Notes: network/vlan_notions.md
   - Packet Tracer Lab: packet_tracer_lab/packet_tracer_lab.md

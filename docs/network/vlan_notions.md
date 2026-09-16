@@ -4,10 +4,10 @@ Minipc deve agire da router e da server -> il singolo cavo che lo collega allo s
 - LAN: traffico isolato dell'homelab
 Si utilizza VLAN tagging per distinguere (802.1Q) -> si configura una porta dello switch collegata a proxmox come **trunk**
 
-Due interfacce di rete:
+Due interfacce di rete logiche:
 
-- virtual WAN: no tag
-- virtual LAN: tag con la VLAN dell'homelab -> gateway per tutti i server e acesspoint
+- virtual WAN: no tag (Native VLAN)
+- virtual LAN: tag multipli con le VLAN dell'homelab (10, 20, 30, 40) -> gateway (OPNsense) per tutti i server, client e access point
 
 # Separazione management e server
 
@@ -17,20 +17,22 @@ Due interfacce di rete:
 
 - VLAN 20: server -> 10.0.20.0/24
 
-- VLAN 30: client wifi -> 10.0.30.0/24
+- VLAN 30: client wifi (Trusted) -> 10.0.30.0/24
 
-La creazione di vlan permette di separare logicamente la rete ed istruire il router a permettere classi dispositivi di vlan ad accedere/non accedere ad altre vlan.
+- VLAN 40: client wifi (Guest / Untrusted) -> 10.0.40.0/24
+
+La creazione di VLAN permette di separare logicamente la rete a livello Layer 2 ed istruire il firewall (OPNsense) a permettere o negare a specifiche classi di dispositivi di accedere ad altre VLAN tramite regole di routing.
 
 # Standard IEEE 802.1Q
 
-Un normale pacchetto dati è formato da MAC sorgente, MAC destinatario e dati, quando uso le VLAN devo aggiungere 4 byte per il tag VLAN (un numero da 1 a 4094)
+Un normale pacchetto dati è formato da MAC sorgente, MAC destinatario e dati, quando uso le VLAN devo aggiungere 4 byte per il tag VLAN (un numero da 1 a 4094).
 
 # Access port e Trunk port
 
 Per far funzionare le VLAN, le porte di uno switch possono comportarsi:
 
-- Access port: si collegano dispositivi "stupidi" -> lo switch prima di dare il dato toglie il tag vlan (rende pacchetto untagged) e quando il dispositivo risponde gli riapplica il tag
-- Trunk port: porta per collegare due dispositivi di infrastruttura (switch con proxmox) -> non toglie vlan tag, in questo modo più vlan possono viaggiare sullo stesso cavo fisico.
+- Access port: si collegano dispositivi "stupidi" -> lo switch prima di dare il dato toglie il tag vlan (rende pacchetto untagged) e quando il dispositivo risponde gli riapplica il tag (tramite il PVID).
+- Trunk port: porta per collegare due dispositivi di infrastruttura (es. switch con proxmox) -> non toglie vlan tag, in questo modo più vlan possono viaggiare sullo stesso cavo fisico.
 
 # Native vlan
 
@@ -44,4 +46,4 @@ La native vlan non viene mai usata per far transitare dati utili o di management
 
 `vmbr0` significa virtual machine bridge 0 -> un bridge linux è uno switch lvl 2 creato via software.
 In proxmox se vado sul modulo principale (hermes) -> system -> network -> vmbr0 -> vlan aware
-carico nel kernel linux il modulo 8021q che trasforma questo switch software in managed -> ora posso creare la vm
+carico nel kernel linux il modulo 8021q che trasforma questo switch software in managed -> ora posso creare la vm.

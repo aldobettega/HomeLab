@@ -8,7 +8,7 @@ L'infrastruttura si basa su dispositivi efficienti e compatti, interconnessi tra
 
 * **Server Host (Hypervisor):** Mini PC Acer Veriton N4660G (i5-8500T, 16GB RAM, 512GB NVMe). Ha una sola scheda di rete (`nic0`).
 * **Switch Core:** TP-Link TL-SG608E (Gestito, L2, 8 porte Gigabit).
-* **Access Point:** MikroTik wsAP ac lite (alimentato via PoE tramite Iniettore Tenda POE15F).
+* **Access Point:** 2x MikroTik RBwsAP-5Hac2nD (dual-band). Dislocati in "Soggiorno" e "Camere" per garantire copertura totale e roaming.
 * **Storage di Rete:** 
   * Synology NAS (Nuovo/Principale - `DOMUS-NAS`)
   * D-Link NAS (Vecchio - per backup)
@@ -43,14 +43,15 @@ La configurazione dello switch L2 gestisce il traffico in uscita (matrice Tagged
 La rete adotta un approccio "Router on a Stick" gestito da un firewall virtualizzato (OPNsense). Proxmox ha la direttiva `bridge-vlan-aware yes` attiva sul bridge `vmbr0`. 
 L'IP di Proxmox è volutamente mantenuto sulla rete dell'ISP per garantire l'accesso d'emergenza in caso di crash della VM del firewall (evitando il "lock-out").
 
-* **VLAN 1 (Transit / Fallback) - `192.168.1.0/24`**
+* **VLAN 1 (Transit / Fallback) - 192.168.1.0/24**
   * `192.168.1.1`: Fritzbox (ISP)
+  * `192.168.1.3`: MikroTik AP - Camere (IP Statico Layer 2, Gateway: 192.168.1.1, Nessun DHCP Client)
+  * `192.168.1.4`: MikroTik AP - Soggiorno (IP Statico Layer 2, Gateway: 192.168.1.1, Nessun DHCP Client)
   * `192.168.1.10`: Proxmox Host (Interfaccia di emergenza fuori dal routing interno)
-* **VLAN 10 (Management) - `10.0.10.0/24`**
+* **VLAN 10 (Management) - 10.0.10.0/24**
   * Rete dedicata *esclusivamente* all'hardware di rete.
   * `10.0.10.1`: Gateway OPNsense
   * `10.0.10.2`: Switch TP-Link
-  * `10.0.10.3`: MikroTik AP
   * `10.0.10.4`: Pi-hole
 * **VLAN 20 (Servers & NAS) - `10.0.20.0/24`**
   * Core applicativo e storage. Nessun accesso diretto dall'esterno.
@@ -115,3 +116,17 @@ L'accesso dall'esterno all'HomeLab e ai servizi interni è gestito interamente t
   * **DNS:** `10.0.10.4` (Pi-hole)
   
   *Nota:* Questa configurazione manuale è l'unico modo per garantirne il riconoscimento sullo switch TP-Link (Porta 2, Untagged, PVID 20) e permettere l'aggancio del mount CIFS da parte della macchina virtuale di Immich.
+
+## 7. Infrastruttura Wi-Fi e Roaming (Zero Handoff)
+
+La copertura wireless è gestita da un ecosistema ibrido (Fritzbox + 2x MikroTik) unificato per garantire il roaming trasparente dei client (smartphone/PC) senza l'uso di un controller centralizzato come CAPsMAN.
+
+* **Impostazioni Base Unificate:** Tutti gli emettitori (Fritzbox e MikroTik) trasmettono lo stesso identico SSID (`Sangrilla9`) con protocollo di sicurezza forzato a WPA2-PSK (AES ccm). I MikroTik operano in modalità `ap bridge` (WISP AP).
+* **Gestione Canali Radio (Prevenzione Interferenze):** 
+  Per evitare sovrapposizioni, le frequenze sono state assegnate staticamente:
+  * **2.4 GHz:** MikroTik Soggiorno (wlan1) su 2437 MHz (Ch 6) | MikroTik Camere (wlan1) su 2462 MHz (Ch 11).
+  * **5 GHz:** MikroTik Soggiorno (wlan2) su 5180 MHz (Ch 36) | MikroTik Camere (wlan2) su 5260 MHz (Ch 52).
+* **Logica di Roaming (Access List MikroTik):**
+  Per evitare il fenomeno degli "sticky clients" (dispositivi che rimangono agganciati a un AP lontano con segnale debole), su entrambi i MikroTik è attiva una regola "Drop" dinamica in `Wireless > Access List`.
+  * **Regola:** `Signal Strength Range -120..-75` | `Authentication: no`.
+  * **Effetto:** Sgancia forzatamente i client quando il segnale scende sotto i -75 dBm, costringendoli a rinegoziare la connessione istantaneamente con l'Access Point più vicino e con segnale migliore.

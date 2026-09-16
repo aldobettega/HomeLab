@@ -1,6 +1,8 @@
 # 192.168.1.0/24 (WAN / Rete Base Untagged)
 
 - 192.168.1.1: FritzBox router (WAN gateway e DHCP base)
+- 192.168.1.3: Access Point MikroTik - Camere (IP Statico)
+- 192.168.1.4: Access Point MikroTik - Soggiorno (IP Statico)
 - 192.168.1.10: Proxmox Server (Hermes - Interfaccia di emergenza/fisica su `vmbr0`)
 - 192.168.1.217: OPNsense router (Interfaccia virtuale WAN che riceve Internet dal Fritzbox)
 
@@ -10,7 +12,6 @@
 
 - 10.0.10.1: OPNsense router (Gateway VLAN 10)
 - 10.0.10.2: Switch TP-Link (IP di gestione)
-- 10.0.10.3: AccessPoint MikroTik (IP di gestione)
 - 10.0.10.4: Pi-hole (DNS Server primario dell'infrastruttura - Container LXC 101)
 
 ## VLAN 20 - Servers, Storage & Apps (10.0.20.0/24)
@@ -27,16 +28,27 @@
 ## VLAN 30 - Trusted / Home Network (10.0.30.0/24)
 
 - 10.0.30.1: OPNsense router (Gateway VLAN 30)
-- 10.0.30.x (DHCP): Dispositivi personali affidabili connessi alla rete Wi-Fi del MikroTik.
+- 10.0.30.x (DHCP): Dispositivi personali affidabili connessi alla rete Wi-Fi unificata (Sangrilla9) gestita dai MikroTik.
 
 ## VLAN 40 - Guest & Untrusted (10.0.40.0/24)
 Rete isolata dal resto del lab in ottica Zero Trust. I client non possono raggiungere Proxmox, i NAS o le altre VLAN; il traffico verso le reti private (RFC1918) è bloccato dal firewall. Possono connettersi solo a Internet.
 
 - 10.0.40.1: OPNsense router (Gateway VLAN 40)
-- 10.0.40.x (DHCP): Utenti ospiti (amici/parenti) connessi a un SSID Wi-Fi "Guest" dedicato sul MikroTik.
+- 10.0.40.x (DHCP): Utenti ospiti (amici/parenti) connessi a un SSID Wi-Fi "Guest" dedicato sui MikroTik.
 - 10.0.40.x (DHCP/Statico): Dispositivi Smart Home / IoT (TV, telecamere, lampadine) che richiedono solo l'accesso al cloud.
 - 10.0.40.x: Eventuali VM "Sandbox" date in concessione a utenti esterni per fare esperimenti, isolate dai dati sensibili.
 
 ---
 **Nota sull'Accesso Esterno (Zero Trust):**
 Gli utenti esterni che utilizzano servizi come Immich da remoto non si interfacciano mai con la porta WAN esposta su Internet. L'accesso avviene tramite il tunnel VPN Tailscale configurato su OPNsense (Subnet Router). Il traffico entra criptato, viene instradato verso Nginx Proxy Manager (`10.0.20.3`), il quale preleva e serve i dati in modo sicuro interrogando i vari nodi sulla VLAN 20.
+
+# Porte switch
+
+1: Proxmox
+2: Nas D-Link (vecchio)
+3: Access Point MikroTik (Soggiorno)
+4: Nas Synology (nuovo)
+5: Access Point MikroTik (Camere) 
+6: -
+7: -
+8: Accesso alla rete (Uplink verso Fritzbox)
